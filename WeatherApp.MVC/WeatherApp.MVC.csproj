@@ -16,6 +16,11 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Weather\_Header.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Weather\_mainContent.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Weather\_mainContent.cshtml" />
   </ItemGroup>
 
 </Project>
