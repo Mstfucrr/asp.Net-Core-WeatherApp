@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WeatherApp.MVC.Models
+@using System.Globalization
 @model WeatherApp.MVC.Models.Weather
 
 @{
@@ -28,8 +29,8 @@
 		<div class="forecast-container">
 			<div class="today forecast">
 				<div class="forecast-header">
-					<div class="day">Monday</div>
-					<div class="date">6 Oct</div>
+					<div class="day">@weatherApiResponse.forecast.forecastday.First().date</div>
+					
 				</div> <!-- .forecast-header -->
 				<div class="forecast-content">
 					<div class="location">@weatherApiResponse.location.country / @weatherApiResponse.location.name</div>
@@ -49,7 +50,7 @@
 
 				<div class="forecast">
 					<div class="forecast-header">
-						<div class="day">@Convert.ToDateTime(forecast.date).DayOfWeek</div>
+						<div class="day">@Convert.ToDateTime(forecast.date).AddDays(1).DayOfWeek</div>
 					</div> <!-- .forecast-header -->
 					<div class="forecast-content">
 						<div class="forecast-icon">
@@ -134,7 +135,21 @@
 								<div id="sunUp" style="float: left;"><b>@weatherApiResponse.forecast.forecastday[0].astro.sunrise</b></div> <div id="sunDown" style="float: right;"><b>@weatherApiResponse.forecast.forecastday[0].astro.sunset</b></div>
 							</div>
 							<div id="sun-id3"></div>
-							<div id="sun-id4"></div>
+							@{
+								var dt1 = DateTime.ParseExact(weatherApiResponse.forecast.forecastday[0].astro.sunrise, "hh:mm tt", CultureInfo.InvariantCulture);
+								var dt2 = DateTime.ParseExact(weatherApiResponse.forecast.forecastday[0].astro.sunset, "hh:mm tt", CultureInfo.InvariantCulture);
+								var fark = dt2 - dt1;
+								var now = DateTime.Now;
+								var gecenSure = now - dt1;
+								var yuzde = (gecenSure.TotalSeconds / fark.TotalSeconds) * 100 / 2;
+								var sun_yuzde = Math.Round(yuzde, 0);
+							}
+							@if (sun_yuzde >= 49)
+							{
+								<div id="sun-id4" style="left: @sun_yuzde%"></div>
+
+							}
+							
 						</div>
 					</div>
 				</div> <!-- .detail-content -->
