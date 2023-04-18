@@ -1,8 +1,12 @@
-﻿@model dynamic
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WeatherApp.MVC.Models
+@model WeatherApp.MVC.Models.Weather
 
 @{
 	ViewBag.Title = "title";
 	Layout = "_Layout";
+
+	var weatherApiResponse = ViewBag.WeatherResponse as WeatherApiResponse;
 }
 
 @{
@@ -11,8 +15,8 @@
 
 <div class="hero" data-bg-image="images/banner.png">
 	<div class="container">
-		<form action="#" class="find-location">
-			<input type="text" placeholder="Find your location...">
+		<form asp-controller="Weather" asp-action="Index" method="post" class="find-location">
+			<input type="text" placeholder="Find your location..." asp-for="CityName" />
 			<input type="submit" value="Find">
 		</form>
 
@@ -28,88 +32,35 @@
 					<div class="date">6 Oct</div>
 				</div> <!-- .forecast-header -->
 				<div class="forecast-content">
-					<div class="location">New York</div>
+					<div class="location">@weatherApiResponse.location.country / @weatherApiResponse.location.name</div>
 					<div class="degree">
-						<div class="num">23<sup>o</sup>C</div>
+
+						<div class="num">@weatherApiResponse!.current.temp_c<sup>o</sup>C</div>
+
 						<div class="forecast-icon">
-							<img src="images/icons/icon-1.svg" alt="" width=90>
+							<img src="@weatherApiResponse.current.condition.icon" alt="" width=90>
 						</div>
 					</div>
-					
+
 				</div>
 			</div>
-			<div class="forecast">
-				<div class="forecast-header">
-					<div class="day">Tuesday</div>
-				</div> <!-- .forecast-header -->
-				<div class="forecast-content">
-					<div class="forecast-icon">
-						<img src="images/icons/icon-3.svg" alt="" width=48>
+			@foreach (var forecast in weatherApiResponse.forecast.forecastday)
+			{
+
+				<div class="forecast">
+					<div class="forecast-header">
+						<div class="day">@Convert.ToDateTime(forecast.date).DayOfWeek</div>
+					</div> <!-- .forecast-header -->
+					<div class="forecast-content">
+						<div class="forecast-icon">
+							<img src="@forecast.day.condition.icon" alt="" width=48>
+						</div>
+						<div class="degree">@forecast.day.avgtemp_c<sup>o</sup>C</div>
+						<small>@forecast.day.mintemp_c<sup>o</sup></small>
 					</div>
-					<div class="degree">23<sup>o</sup>C</div>
-					<small>18<sup>o</sup></small>
 				</div>
-			</div>
-			<div class="forecast">
-				<div class="forecast-header">
-					<div class="day">Wednesday</div>
-				</div> <!-- .forecast-header -->
-				<div class="forecast-content">
-					<div class="forecast-icon">
-						<img src="images/icons/icon-5.svg" alt="" width=48>
-					</div>
-					<div class="degree">23<sup>o</sup>C</div>
-					<small>18<sup>o</sup></small>
-				</div>
-			</div>
-			<div class="forecast">
-				<div class="forecast-header">
-					<div class="day">Thursday</div>
-				</div> <!-- .forecast-header -->
-				<div class="forecast-content">
-					<div class="forecast-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="degree">23<sup>o</sup>C</div>
-					<small>18<sup>o</sup></small>
-				</div>
-			</div>
-			<div class="forecast">
-				<div class="forecast-header">
-					<div class="day">Friday</div>
-				</div> <!-- .forecast-header -->
-				<div class="forecast-content">
-					<div class="forecast-icon">
-						<img src="images/icons/icon-12.svg" alt="" width=48>
-					</div>
-					<div class="degree">23<sup>o</sup>C</div>
-					<small>18<sup>o</sup></small>
-				</div>
-			</div>
-			<div class="forecast">
-				<div class="forecast-header">
-					<div class="day">Saturday</div>
-				</div> <!-- .forecast-header -->
-				<div class="forecast-content">
-					<div class="forecast-icon">
-						<img src="images/icons/icon-13.svg" alt="" width=48>
-					</div>
-					<div class="degree">23<sup>o</sup>C</div>
-					<small>18<sup>o</sup></small>
-				</div>
-			</div>
-			<div class="forecast">
-				<div class="forecast-header">
-					<div class="day">Sunday</div>
-				</div> <!-- .forecast-header -->
-				<div class="forecast-content">
-					<div class="forecast-icon">
-						<img src="images/icons/icon-14.svg" alt="" width=48>
-					</div>
-					<div class="degree">23<sup>o</sup>C</div>
-					<small>18<sup>o</sup></small>
-				</div>
-			</div>
+			}
+			
 		</div>
 		<hr>
 		<div class="hourly-forecast container">
@@ -118,174 +69,19 @@
 				<div style="font-size: 18px;font-weight: bold; margin:15px 0 5px 0">Saatlik tahmin</div>
 			</div> <!-- .forecast-header -->
 			<div class="forecast-content">
-				<div class="hourly-forecast-table">
-					<div class="time">12am</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-1.svg" alt="" width=48>
+
+				@foreach (var hour in weatherApiResponse.forecast.forecastday[0].hour)
+				{
+
+					<div class="hourly-forecast-table">
+						<div class="time">@Convert.ToDateTime(hour.time).ToShortTimeString()</div>
+						<div class="weather-icon">
+							<img src="@hour.condition.icon" alt="">
+						</div>
+						<div class="temp">@hour.temp_c<sup>o</sup>C</div>
 					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3am</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-3.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">6am</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-4.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">9am</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-5.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">12pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-6.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
-				<div class="hourly-forecast-table">
-					<div class="time">3pm</div>
-					<div class="weather-icon">
-						<img src="images/icons/icon-7.svg" alt="" width=48>
-					</div>
-					<div class="temp">22<sup>o</sup>C</div>
-				</div>
+				}
+
 
 			</div>
 			<hr style="width: 33%; margin-top: 15px; margin-bottom: 15px;">
@@ -296,46 +92,46 @@
 				</div> <!-- .forecast-header -->
 
 				<div class="detail-content">
-					<div class="col-md-6">
+					<div class="col-md-7">
 						<div class="detail-row" style="margin-top: 25px;">
 							<div class="detail-col col-md-2">
 								<div class="detail-label"><b>Rüzgar</b></div>
-								<div class="detail-value">12km/h</div>
+								<div class="detail-value">@weatherApiResponse.current.wind_kph km/h</div>
 								<div class="detail-icon">
 									<img src="images/icon-wind.png" alt="" srcset="">
 								</div>
 							</div>
 							<div class="detail-col col-md-2">
 								<div class="detail-label"><b>Yön</b></div>
-								<div class="detail-value">East</div>
+								<div class="detail-value">@weatherApiResponse.Wind()</div>
 								<div class="detail-icon">
 									<img src="images/icon-compass.png" alt="" srcset="">
 								</div>
 							</div>
-							<div class="detail-col col-md-2">
+							@*<div class="detail-col col-md-2">
 								<div class="detail-label"><b>Nem</b></div>
-								<div class="detail-value">12km/h</div>
-							</div>
+								<div class="detail-value">@weatherApiResponse.currentkm/h</div>
+							</div>*@
 							<div class="detail-col col-md-2">
 								<div class="detail-label"><b>Yağmur</b></div>
-								<div class="detail-value">20%</div>
+								<div class="detail-value">@weatherApiResponse.forecast.forecastday[0].day.daily_will_it_rain %</div>
 								<div class="detail-icon">
 									<img src="images/icon-umberella.png" alt="" srcset="">
 								</div>
 							</div>
 							<div class="detail-col col-md-2">
 								<div class="detail-label"><b>Basınç</b></div>
-								<div class="detail-value">1020hPa</div>
+								<div class="detail-value">@weatherApiResponse.current.pressure_in hPa</div>
 							</div>
 						</div> <!-- .detail-row -->
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-5">
 
 						<div class="sun-detail-row"
 							 style="/* background-color: aqua; */width: 100%;height: 55px;margin-top: 25px;">
 							<div id="sun-id1"></div>
 							<div id="sun-id2">
-								<div id="sunUp" style="float: left;"><b>6:00 AM</b></div> <div id="sunDown" style="float: right;"><b>6:00 PM</b></div>
+								<div id="sunUp" style="float: left;"><b>@weatherApiResponse.forecast.forecastday[0].astro.sunrise</b></div> <div id="sunDown" style="float: right;"><b>@weatherApiResponse.forecast.forecastday[0].astro.sunset</b></div>
 							</div>
 							<div id="sun-id3"></div>
 							<div id="sun-id4"></div>
@@ -353,49 +149,49 @@
 	</div>
 
 	@*<div class="fullwidth-block" data-bg-color="#262936">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-4">
-					<div class="news">
-						<div class="date">06.10</div>
-						<h3><a href="#">Doloremque laudantium totam sequi </a></h3>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo saepe assumenda
-							dolorem modi, expedita voluptatum ducimus necessitatibus. Asperiores quod
-							reprehenderit necessitatibus harum, mollitia, odit et consequatur maxime nisi
-							amet
-							doloremque.
-						</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="news">
-						<div class="date">06.10</div>
-						<h3><a href="#">Doloremque laudantium totam sequi </a></h3>
-						<p>
-							Nobis architecto consequatur ab, ea, eum autem aperiam accusantium placeat vitae
-							facere explicabo temporibus minus distinctio cum optio quis, dignissimos eius
-							aspernatur fuga. Praesentium totam, corrupti beatae amet expedita veritatis.
-						</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="news">
-						<div class="date">06.10</div>
-						<h3><a href="#">Doloremque laudantium totam sequi </a></h3>
-						<p>
-							Enim impedit officiis placeat qui recusandae doloremque possimus, iusto
-							blanditiis,
-							quam optio delectus maiores. Possimus rerum, velit cum natus eos. Cumque
-							pariatur
-							beatae asperiores, esse libero quas ad dolorem. Voluptates.
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
+	<div class="container">
+	<div class="row">
+	<div class="col-md-4">
+	<div class="news">
+	<div class="date">06.10</div>
+	<h3><a href="#">Doloremque laudantium totam sequi </a></h3>
+	<p>
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo saepe assumenda
+	dolorem modi, expedita voluptatum ducimus necessitatibus. Asperiores quod
+	reprehenderit necessitatibus harum, mollitia, odit et consequatur maxime nisi
+	amet
+	doloremque.
+	</p>
 	</div>
-*@
+	</div>
+	<div class="col-md-4">
+	<div class="news">
+	<div class="date">06.10</div>
+	<h3><a href="#">Doloremque laudantium totam sequi </a></h3>
+	<p>
+	Nobis architecto consequatur ab, ea, eum autem aperiam accusantium placeat vitae
+	facere explicabo temporibus minus distinctio cum optio quis, dignissimos eius
+	aspernatur fuga. Praesentium totam, corrupti beatae amet expedita veritatis.
+	</p>
+	</div>
+	</div>
+	<div class="col-md-4">
+	<div class="news">
+	<div class="date">06.10</div>
+	<h3><a href="#">Doloremque laudantium totam sequi </a></h3>
+	<p>
+	Enim impedit officiis placeat qui recusandae doloremque possimus, iusto
+	blanditiis,
+	quam optio delectus maiores. Possimus rerum, velit cum natus eos. Cumque
+	pariatur
+	beatae asperiores, esse libero quas ad dolorem. Voluptates.
+	</p>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	*@
 	<div class="fullwidth-block">
 		<div class="container">
 			<div class="row">
