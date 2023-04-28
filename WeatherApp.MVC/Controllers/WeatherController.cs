@@ -38,5 +38,5 @@ namespace WeatherApp.MVC.Controllers
 
 			return View();
         }
-    }
+	}
 }

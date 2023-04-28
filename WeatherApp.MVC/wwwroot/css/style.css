@@ -1302,14 +1302,36 @@ form textarea {
       .forecast-container .forecast .forecast-content small {
         font-size: 16px;
         font-size: 1.1428571429em; }
-
-.hourly-forecast {
-  display: block;
-    width: 100%;
-    height: 452px;
-    background: #323544;
-    border-radius: 0px 0px 15px 15px;
+#forecast-content-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
 }
+    #forecast-content-header #Favorite a {
+        text-decoration: auto;
+        color: #fbff00;
+        width: 100%;
+        display: block;
+        text-align: center;
+        
+    }
+        #forecast-content-header #Favorite a i {
+            transition: .4s;
+        }
+
+        #forecast-content-header #Favorite a:hover i {
+            font-size: 35px;
+        }
+
+
+        .hourly-forecast {
+            display: block;
+            width: 100%;
+            height: 452px;
+            background: #323544;
+            border-radius: 0px 0px 15px 15px;
+        }
 .hourly-forecast .forecast-content {
   
   display: flex;

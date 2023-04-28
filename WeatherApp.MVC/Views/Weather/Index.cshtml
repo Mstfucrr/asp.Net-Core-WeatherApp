@@ -35,14 +35,32 @@
 			<div class="today forecast">
 				<div class="forecast-header">
 					<div class="day">@weatherApiResponse?.location.localtime</div>
-					
+
 				</div> <!-- .forecast-header -->
 				<div class="forecast-content">
-					<div class="location">@weatherApiResponse?.location.country / @weatherApiResponse?.location.name</div>
-					<script>
-						$("title")[0].innerText = "@weatherApiResponse?.location.country / @weatherApiResponse?.location.name - Weather";
-					</script>
+					<div id="forecast-content-header">
 
+						<div class="location">@weatherApiResponse?.location.country / @weatherApiResponse?.location.name</div>
+						<script>
+							$("title")[0].innerText = "@weatherApiResponse?.location.country / @weatherApiResponse?.location.name - Weather";
+						</script>
+						@if (weatherApiResponse != null)
+						{
+
+							<div id="Favorite">
+								<a href="#" id="FavoriteBtn" data-city="@weatherApiResponse?.location.name">
+									<i class="fa-regular fa-star fa-2xl" style="color: #fbff00;"></i>
+									<h4 style="margin-top: 10px"> Favori Ekle </h4>
+								</a>
+
+							</div>
+							<script src="~/js/favorite.js"></script>
+							<script>
+								favoriteCityEdit("@weatherApiResponse?.location.name");
+							</script>
+						}
+
+					</div>
 					<div class="degree">
 
 						<div class="num">@weatherApiResponse!.current.temp_c<sup>o</sup>C</div>
@@ -63,14 +81,14 @@
 					</div> <!-- .forecast-header -->
 					<div class="forecast-content">
 						<div class="forecast-icon">
-							<img src="@forecast.day.condition.icon" alt="" width=48>
+							<img src="@forecast.day.condition.icon" alt="" width=80>
 						</div>
 						<div class="degree">@forecast.day.avgtemp_c<sup>o</sup>C</div>
 						<small>@forecast.day.mintemp_c<sup>o</sup></small>
 					</div>
 				</div>
 			}
-			
+
 		</div>
 		<hr>
 		<div class="hourly-forecast container">
@@ -119,8 +137,8 @@
 								</div>
 							</div>
 							@*<div class="detail-col col-md-2">
-								<div class="detail-label"><b>Nem</b></div>
-								<div class="detail-value">@weatherApiResponse.currentkm/h</div>
+							<div class="detail-label"><b>Nem</b></div>
+							<div class="detail-value">@weatherApiResponse.currentkm/h</div>
 							</div>*@
 							<div class="detail-col col-md-2">
 								<div class="detail-label"><b>Yağmur</b></div>
@@ -145,7 +163,7 @@
 							</div>
 							<div id="sun-id3"></div>
 							@{
-								var dt1 = DateTime.ParseExact(weatherApiResponse.forecast.forecastday[0].astro.sunrise, "hh:mm tt", CultureInfo.InvariantCulture);
+								var dt1 = DateTime.ParseExact(weatherApiResponse.forecast.forecastday[0].astro.sunrise, "hh:mm tt", CultureInfo.InvariantCulture);  // 06:04 AM
 								var dt2 = DateTime.ParseExact(weatherApiResponse.forecast.forecastday[0].astro.sunset, "hh:mm tt", CultureInfo.InvariantCulture);
 								var fark = dt2 - dt1;
 								var now = Convert.ToDateTime(weatherApiResponse.location.localtime);
@@ -153,9 +171,9 @@
 								var yuzde = (gecenSure.TotalSeconds / fark.TotalSeconds) * 100 / 2;
 								var sun_yuzde = Math.Round(yuzde, 0);
 							}
-							@if (sun_yuzde <= 49)
+							@if (sun_yuzde <= 49 && gecenSure.Hours > 0)
 							{
-								<div id="sun-id4" style="left: @sun_yuzde"></div>
+								<div id="sun-id4" style="left: @sun_yuzde%"></div>
 
 							}
 							else
@@ -165,7 +183,7 @@
 								</div>
 
 							}
-							
+
 						</div>
 					</div>
 				</div> <!-- .detail-content -->
