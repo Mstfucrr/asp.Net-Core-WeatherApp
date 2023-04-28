@@ -34,8 +34,9 @@ namespace WeatherApp.MVC.Controllers
 	        _weatherApiResponse = await _weatherService.GetWeatherAsync(weather.CityName);
 
 	        if (_weatherApiResponse != null) ViewBag.WeatherResponse = _weatherApiResponse;
-	        
-	        return View();
+	        ViewData["Title"] = _weatherApiResponse?.location.country + " / " + _weatherApiResponse?.location.name;
+
+			return View();
         }
     }
 }

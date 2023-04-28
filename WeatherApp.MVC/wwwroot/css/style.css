@@ -1320,12 +1320,13 @@ form textarea {
   overflow: auto;
 
 }
-#sun-id1{
-  background: yellow;
-  width: 207px;
-  height: 138px;
-  border-radius: 50% 50% 0px 0px;
-  opacity: 0.4;
+#sun-id1 {
+    background: yellow;
+    width: 207px;
+    height: 138px;
+    border-radius: 50% 50% 0px 0px;
+    opacity: 0.27;
+    transform: scale(1.06,1.1);
 }
 #sun-id2{
   width: 240px;
@@ -1337,8 +1338,8 @@ form textarea {
     background-color: #323544;
     border-top: 2px solid #bfc1c8;
 }
-#sun-id3{
-  width: 208px;
+#sun-id3 {
+    width: 208px;
     height: 138px;
     position: relative;
     top: -240.8px;
@@ -1347,17 +1348,17 @@ form textarea {
     border-width: 2px 2px 0 2px;
     border-style: dashed;
     z-index: 10;
+    transform: scale(1.06,1.1);
 }
-#sun-id4{
-  
-  width: 208px;
-  height: 102px;
-  position: relative;
-  top: -391px;
-  left: 128px;
-  z-index: 1;
-  background-color: #323544;
-
+#sun-id4 {
+    width: 220px;
+    height: 102px;
+    position: relative;
+    top: -391px;
+    left: 128px;
+    z-index: 1;
+    background-color: #323544;
+    transform: translate(-5px, 0px);
 }
 
 .detail-icon img{
