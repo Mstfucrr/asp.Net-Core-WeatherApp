@@ -1,67 +1,12 @@
-﻿@model dynamic
+﻿@model WeatherApp.MVC.Models.WeatherApiResponse
+
 
 <main class="main-content">
 	<div class="fullwidth-block">
 	</div>
 	<div class="fullwidth-block">
 		<div class="container">
-			<div class="row">
-				<div class="col-md-4">
-					<h2 class="section-title">Application features</h2>
-					<ul class="arrow-feature">
-						<li>
-							<h3>Natus error sit voluptatem accusantium</h3>
-							<p>
-								Doloremque laudantium totam rem aperiam Inventore veritatis et quasi
-								architecto
-								beatae vitae.
-							</p>
-						</li>
-						<li>
-							<h3>Natus error sit voluptatem accusantium</h3>
-							<p>
-								Doloremque laudantium totam rem aperiam Inventore veritatis et quasi
-								architecto
-								beatae vitae.
-							</p>
-						</li>
-						<li>
-							<h3>Natus error sit voluptatem accusantium</h3>
-							<p>
-								Doloremque laudantium totam rem aperiam Inventore veritatis et quasi
-								architecto
-								beatae vitae.
-							</p>
-						</li>
-					</ul>
-				</div>
-				<div class="col-md-4">
-					<h2 class="section-title">Weather analyssis</h2>
-					<ul class="arrow-list">
-						<li><a href="#">Accusantium doloremque laudantium rem aperiam</a></li>
-						<li><a href="#">Eaque ipsa quae ab illo inventore veritatis quasi</a></li>
-						<li><a href="#">Architecto beatae vitae dicta sunt explicabo</a></li>
-						<li><a href="#">Nemo enim ipsam voluptatem quia voluptas</a></li>
-						<li><a href="#">Aspernatur aut odit aut fugit, sed quia consequuntur</a></li>
-						<li><a href="#">Magni dolores eos qui ratione voluptatem sequi</a></li>
-						<li><a href="#">Neque porro quisquam est qui dolorem ipsum quia</a></li>
-					</ul>
-				</div>
-				<div class="col-md-4">
-					<h2 class="section-title">Awesome Photos</h2>
-					<div class="photo-grid">
-						<a href="#"><img src="images/thumb-1.jpg" alt="#"></a>
-						<a href="#"><img src="images/thumb-2.jpg" alt="#"></a>
-						<a href="#"><img src="images/thumb-3.jpg" alt="#"></a>
-						<a href="#"><img src="images/thumb-4.jpg" alt="#"></a>
-						<a href="#"><img src="images/thumb-5.jpg" alt="#"></a>
-						<a href="#"><img src="images/thumb-6.jpg" alt="#"></a>
-						<a href="#"><img src="images/thumb-7.jpg" alt="#"></a>
-						<a href="#"><img src="images/thumb-8.jpg" alt="#"></a>
-						<a href="#"><img src="images/thumb-9.jpg" alt="#"></a>
-					</div>
-				</div>
-			</div>
+					<img style="width: 100%; height: 520px;" alt="@Model.location.name,@Model.location.region" src="https://maps.googleapis.com/maps/api/staticmap?center=@Model.location.name,@Model.location.region&zoom=9&size=1200x500&key=AIzaSyAuonCI6dPu63r8wXMGDc5a5-Svu_2r8s0" />
 		</div>
 	</div>
 </main> <!-- .main-content -->
