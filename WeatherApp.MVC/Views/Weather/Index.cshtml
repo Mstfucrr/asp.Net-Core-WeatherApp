@@ -46,17 +46,25 @@
 						</script>
 						@if (weatherApiResponse != null)
 						{
-
 							<div id="Favorite">
-								<a href="#" id="FavoriteBtn" data-city="@weatherApiResponse?.location.name">
+								<button class="btn" id="FavoriteBtn" data-city="@weatherApiResponse?.location.name">
 									<i class="fa-regular fa-star fa-2xl" style="color: #fbff00;"></i>
 									<h4 style="margin-top: 10px"> Favori Ekle </h4>
-								</a>
+								</button>
 
 							</div>
-							<script src="~/js/favorite.js"></script>
 							<script>
-								favoriteCityEdit("@weatherApiResponse?.location.name");
+								favoriteCity = localStorage.getItem('favoriteCity').split(',')
+
+								if (favoriteCity.includes("@weatherApiResponse?.location.name")) { // varsa
+									$("#FavoriteBtn h4")[0].innerText = "Favori Kaldır"
+									$("#FavoriteBtn i")[0].classList.value = "fa-solid fa-star fa-2xl";
+								}
+								else { // yoksa
+
+									$("#FavoriteBtn h4")[0].innerText = "Favori Ekle"
+									$("#FavoriteBtn i")[0].classList.value = "fa-regular fa-star fa-2xl";
+								}
 							</script>
 						}
 
@@ -86,9 +94,20 @@
 						<div class="degree">@forecast.day.avgtemp_c<sup>o</sup>C</div>
 						<small>@forecast.day.mintemp_c<sup>o</sup></small>
 					</div>
+
 				</div>
 			}
+			<div class="forecast">
+				<div class="bg-dark favorite-div text-light" style="padding: 4.5%;">
+					<h3>Favoriler</h3>
+					<i class="fa-solid fa-star fa-2xl" style="color: #fbff00; position: absolute; top: 12%; right: 9%;"></i>
+					<table id="FavoriteTable" class="table table-dark">
+						<tbody id="FavoriteTableBody" style="width: 100%">
+						</tbody>
 
+					</table>
+				</div>
+			</div>
 		</div>
 		<hr>
 		<div class="hourly-forecast container">
@@ -130,10 +149,15 @@
 								</div>
 							</div>
 							<div class="detail-col col-md-2">
+								@{
+									var yon = @weatherApiResponse.Wind().yon;
+									var derece = @weatherApiResponse.Wind().derece - 80 + "deg";
+								}
 								<div class="detail-label"><b>Yön</b></div>
-								<div class="detail-value">@weatherApiResponse.Wind()</div>
+								<div class="detail-value">@yon</div>
+								<div class="detail-deg">@weatherApiResponse.Wind().derece<sup>o</sup></div>
 								<div class="detail-icon">
-									<img src="images/icon-compass.png" alt="" srcset="">
+									<img src="images/icon-compass.png" style="transform: rotate(@derece)" alt="" srcset="">
 								</div>
 							</div>
 							@*<div class="detail-col col-md-2">
@@ -186,19 +210,20 @@
 
 						</div>
 					</div>
+
 				</div> <!-- .detail-content -->
 			</div> <!-- .detail-forecast -->
 		</div> <!-- hourly-forecast -->
-
-
 	</div>
 </div>
 
+@{
+	await Html.RenderPartialAsync("_newsContent");
+}
 
 @{
 	await Html.RenderPartialAsync("_mainContent");
 }
-
 
 @{
 	await Html.RenderPartialAsync("_Footer");

@@ -141,8 +141,8 @@
         public Forecast forecast { get; set; }
 
 
-        public string Wind()
-        {
+        public (string yon, int derece) Wind()
+        {	
 	        var derece = current.wind_degree;
 	        var yon = "";
 
@@ -163,7 +163,7 @@
 	        else if (derece >= 292.5 && derece < 337.5)
 		        yon = "Kuzeybatı";
 
-	        return yon;
+	        return (yon, derece);
         }
 	}
 }
